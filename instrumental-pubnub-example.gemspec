@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.add_dependency(%q<pubnub>, [">= 3.6.9"])
   s.add_dependency(%q<instrumental_agent>, [">= 0.12.7"])
+  s.add_development_dependency(%q<rake>, [">= 0"])
 end

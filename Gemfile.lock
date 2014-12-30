@@ -16,9 +16,11 @@ GEM
       eventmachine (~> 1.0)
       json (~> 1.8)
       net-http-persistent (~> 2.9)
+    rake (10.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   instrumental_pubnub_example!
+  rake
