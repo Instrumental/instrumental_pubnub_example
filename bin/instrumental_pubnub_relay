@@ -1,25 +1,32 @@
 #!/usr/bin/env ruby
 
 require 'instrumental/pub_nub/relay'
+require 'logger'
 require 'optparse'
+require 'socket'
 
 pubnub_subscribe = nil
 pubnub_channel   = nil
 instrumental_key = nil
-key_prefix       = nil
+log_level        = 'warn'
+log_levels       = %w{debug warn info fatal}
+key_prefix       = Socket.gethostname
 
 OptionParser.new do |opts|
-  opts.on("-k", "--pubnub-subscribe-key", "Your PubNub subscribe key") do |k|
+  opts.on("-k", "--pubnub-subscribe-key KEY", "Your PubNub subscribe key") do |k|
     pubnub_subscribe = k
   end
-  opts.on("-c", "--pubnub-channel", "Your PubNub channel") do |c|
+  opts.on("-c", "--pubnub-channel CHANNEL", "Your PubNub channel") do |c|
     pubnub_channel = c
   end
-  opts.on("-i", "--instrumental-api-key", "Your Instrumental API key") do |i|
+  opts.on("-i", "--instrumental-api-key API_KEY", "Your Instrumental API key") do |i|
     instrumental_key = i
   end
-  opts.on("-p", "--key-prefix", "String to prefix all received metrics with (eg, host001)") do |p|
+  opts.on("-p", "--key-prefix PREFIX", "String to prefix all received metrics with (default: #{key_prefix})") do |p|
     key_prefix = p
+  end
+  opts.on("-l", "--log-level LEVEL", log_levels, "Log level for output, valid values are: #{log_levels.inspect}") do |l|
+    log_level = l
   end
 end.parse!
 
@@ -35,7 +42,17 @@ if instrumental_key.to_s.strip.empty?
   raise "You must provide an Instrumental API key"
 end
 
-relay = Instrumental::PubNub::Relay.new(pubnub_subscribe, pubnub_channel, instrumental_key, key_prefix)
+if key_prefix.to_s.strip.empty?
+  raise "You must provide a non-empty key prefix"
+end
+
+logger       = Logger.new(STDOUT)
+logger.level = Logger.const_get(log_level.upcase)
+relay        = Instrumental::PubNub::Relay.new(pubnub_subscribe,
+                                                pubnub_channel,
+                                                instrumental_key,
+                                                key_prefix,
+                                                logger)
 
 trap('INT') do
   relay.disconnect!
