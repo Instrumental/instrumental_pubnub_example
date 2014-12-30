@@ -27,6 +27,7 @@ Usage: instrumental_pubnub_relay [options]
     -c, --pubnub-channel CHANNEL     Your PubNub channel
     -i API_KEY,                      Your Instrumental API key
         --instrumental-api-key
-    -p, --key-prefix PREFIX          String to prefix all received metrics with (default: my.machine)
+    -p, --key-prefix PREFIX          String to prefix all received metrics with (default: my.hostname)
     -l, --log-level LEVEL            Log level for output, valid values are: ["debug", "warn", "info", "fatal"]
+    -v, --version                    Print version and exit
 ```
