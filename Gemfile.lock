@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    instrumental_pubnub_example (0.0.1)
+      instrumental_agent (>= 0.12.7)
+      pubnub (>= 3.6.9)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    eventmachine (1.0.4)
+    instrumental_agent (0.12.7)
+    json (1.8.1)
+    net-http-persistent (2.9.4)
+    pubnub (3.6.9)
+      eventmachine (~> 1.0)
+      json (~> 1.8)
+      net-http-persistent (~> 2.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  instrumental_pubnub_example!

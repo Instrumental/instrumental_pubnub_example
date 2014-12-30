@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'instrumental/pub_nub/relay'
+require 'optparse'
+
+pubnub_subscribe = nil
+pubnub_channel   = nil
+instrumental_key = nil
+key_prefix       = nil
+
+OptionParser.new do |opts|
+  opts.on("-k", "--pubnub-subscribe-key", "Your PubNub subscribe key") do |k|
+    pubnub_subscribe = k
+  end
+  opts.on("-c", "--pubnub-channel", "Your PubNub channel") do |c|
+    pubnub_channel = c
+  end
+  opts.on("-i", "--instrumental-api-key", "Your Instrumental API key") do |i|
+    instrumental_key = i
+  end
+  opts.on("-p", "--key-prefix", "String to prefix all received metrics with (eg, host001)") do |p|
+    key_prefix = p
+  end
+end.parse!
+
+if pubnub_subscribe.to_s.strip.empty?
+  raise "You must provide a PubNub subscribe key"
+end
+
+if pubnub_channel.to_s.strip.empty?
+  raise "You must provide a PubNub channel name"
+end
+
+if instrumental_key.to_s.strip.empty?
+  raise "You must provide an Instrumental API key"
+end
+
+relay = Instrumental::PubNub::Relay.new(pubnub_subscribe, pubnub_channel, instrumental_key, key_prefix)
+
+trap('INT') do
+  relay.disconnect!
+end
+
+relay.run!
