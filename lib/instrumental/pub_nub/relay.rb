@@ -51,8 +51,12 @@ module Instrumental
       end
 
       def gauge_array(name, val)
-        val.map.with_index do |measurement, i|
-          gauge_metric([name, i].join("."), measurement)
+        if val.size != 1
+          val.map.with_index do |measurement, i|
+            gauge_metric([name, i].join("."), measurement)
+          end
+        else
+          gauge_metric(name, val.first)
         end
       end
 
