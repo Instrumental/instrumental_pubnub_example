@@ -28,6 +28,10 @@ OptionParser.new do |opts|
   opts.on("-l", "--log-level LEVEL", log_levels, "Log level for output, valid values are: #{log_levels.inspect}") do |l|
     log_level = l
   end
+  opts.on("-v", "--version", "Print version and exit") do
+    puts "Instrumental Pubnub Example: #{Instrumental::PubNub::VERSION}"
+    exit 0
+  end
 end.parse!
 
 if pubnub_subscribe.to_s.strip.empty?
