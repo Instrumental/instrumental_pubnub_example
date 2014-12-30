@@ -29,6 +29,7 @@ OptionParser.new do |opts|
     log_level = l
   end
   opts.on("-v", "--version", "Print version and exit") do
+    require 'instrumental/pub_nub/version'
     puts "Instrumental Pubnub Example: #{Instrumental::PubNub::VERSION}"
     exit 0
   end
